@@ -1,46 +1,58 @@
 // TODO: Include packages needed for this application
+const inquirer = require('inquirer');
+const fs = require('fs');
+const generateMarkdown = require('./utils/generateMarkdown');
+
+
 
 // TODO: Create an array of questions for user input
 const questions = () => {
     return inquirer.prompt([
       {
         type: 'input',
-        name: 'name',
-        message: 'What is your name?',
+        name: 'project title',
+        message: 'What is the title of your project?',
       },
       {
         type: 'input',
-        name: 'location',
-        message: 'Where are you from?',
+        name: 'entitled description',
+        message: 'Give a brief description of your project?',
       },
       {
         type: 'input',
-        name: 'hobby',
-        message: 'What is your favorite hobby?',
-      },
-      {
-        type: 'input',
-        name: 'food',
-        message: 'What is your favorite food?',
+        name: 'license type',
+        message: 'Choose a license type.',
       },
       {
         type: 'input',
         name: 'github',
-        message: 'Enter your GitHub Username',
+        message: 'Enter your GitHub Username.',
       },
       {
         type: 'input',
-        name: 'linkedin',
-        message: 'Enter your LinkedIn URL.',
+        name: 'email address',
+        message: 'Enter your Email.',
       },
     ]);
   };
 
 // TODO: Create a function to write README file
-function writeToFile(fileName, data) {}
+function writeToFile(fileName, pageContent) {
+  fs.writeFile(fileName, pageContent, (err)=>
+  err ? console.log(err) : console.log('successfully created markdown file')
+  );
+};
 
 // TODO: Create a function to initialize app
-function init() {}
+function init() {
+  inquirer
+  .prompt(questions)
+  .then((answers) => {
+    const markdownContent = generateMarkdown(answers);
+
+    writeToFile('readme.md', markdownContent)
+  });
+};
 
 // Function call to initialize app
 init();
